@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moj-search-api
+  namespace: milvus
+spec:
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "true"
+    spec:
+      containers:
+        - name: moj-search-api
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: moj-search-api
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.namespace=milvus,service.version=latest
