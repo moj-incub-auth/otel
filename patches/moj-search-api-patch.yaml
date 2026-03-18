@@ -4,8 +4,13 @@ metadata:
   name: moj-search-api
   namespace: milvus
 spec:
+  selector:
+    matchLabels:
+      app: moj-search-api
   template:
     metadata:
+      labels:
+        app: moj-search-api
       annotations:
         instrumentation.opentelemetry.io/inject-python: "true"
     spec:
