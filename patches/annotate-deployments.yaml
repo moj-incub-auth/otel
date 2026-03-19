@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: otel-annotate-deployments
+  namespace: moj-vector-data
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: otel-annotator
+      restartPolicy: OnFailure
+      containers:
+        - name: annotator
+          image: registry.redhat.io/openshift4/ose-cli:latest
+          command: ['sh', '-c']
+          args:
+            - |
+              echo "Annotating moj-search-app for OTel auto-instrumentation..."
+              oc patch deployment moj-search-app -n moj-vector-data -p '{"spec":{"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}}}'
+              echo "Done."

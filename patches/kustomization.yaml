@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: milvus
-
 resources:
-  - moj-search-api-patch.yaml
+  - instrumentation-moj-vector-data.yaml
+  - rbac.yaml
+  - annotate-deployments.yaml

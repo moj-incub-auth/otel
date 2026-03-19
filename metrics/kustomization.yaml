@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - service-monitors/vllm-serving-sm.yaml
+  - service-monitors/moj-search-api-sm.yaml
+  - prometheus-rules/moj-alerts.yaml

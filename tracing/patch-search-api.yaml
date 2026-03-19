@@ -1,16 +1,13 @@
+# Apply this patch to the moj-search-api deployment to enable auto-instrumentation:
+#   oc patch deployment moj-search-api -n milvus --patch-file tracing/patch-search-api.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: moj-search-api
   namespace: milvus
 spec:
-  selector:
-    matchLabels:
-      app: moj-search-api
   template:
     metadata:
-      labels:
-        app: moj-search-api
       annotations:
         instrumentation.opentelemetry.io/inject-python: "true"
     spec:
@@ -19,5 +16,7 @@ spec:
           env:
             - name: OTEL_SERVICE_NAME
               value: moj-search-api
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://moj-collector-collector.moj-observability.svc.cluster.local:4318
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.namespace=milvus,service.version=latest
