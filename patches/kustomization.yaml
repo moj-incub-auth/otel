@@ -6,3 +6,5 @@ resources:
   - rbac.yaml
   - annotate-deployments.yaml
   - service-monitor-search-app.yaml
+
+  #comment
